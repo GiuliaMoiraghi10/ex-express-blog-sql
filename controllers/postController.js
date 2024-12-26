@@ -1,4 +1,8 @@
 const posts = require('../data/posts.js')
+
+//importo file di connessione (db.js)
+const connection = require('../data/db.js')
+
 //creo variabile per prendere ultimo id creato
 let lastId = posts.at(-1).id
 
