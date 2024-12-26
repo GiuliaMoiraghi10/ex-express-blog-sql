@@ -6,21 +6,34 @@ const connection = require('../data/db.js')
 //creo variabile per prendere ultimo id creato
 let lastId = posts.at(-1).id
 
+// function index(req, res) {
+//     // res.send('Lista dei post')
+
+//     // filtro i posts con il valore tag che viene passato in query string
+
+//     let filteredPosts = posts
+
+//     if (req.query.tags) {
+//         const queryTags = req.query.tags.toLowerCase()  // metto il valore in minuscolo
+//         filteredPosts = filteredPosts.filter(post =>    // controllo se tag è presente
+//             post.tags.some(tag => queryTags.includes(tag.toLowerCase()))
+//         )
+//     }
+
+//     res.json(posts)
+// }
+
+// function INDEX con nuova connessione a sql
 function index(req, res) {
-    // res.send('Lista dei post')
+    const sql = `SELECT * FROM posts`
 
-    // filtro i posts con il valore tag che viene passato in query string
-
-    let filteredPosts = posts
-
-    if (req.query.tags) {
-        const queryTags = req.query.tags.toLowerCase()  // metto il valore in minuscolo
-        filteredPosts = filteredPosts.filter(post =>    // controllo se tag è presente
-            post.tags.some(tag => queryTags.includes(tag.toLowerCase()))
-        )
-    }
-
-    res.json(posts)
+    connection.query(sql, (err, results) => {
+        if (err) {
+            res.status(500).json({ error: 'Database query failed' })
+        } else {
+            res.json(results)
+        }
+    })
 }
 
 function show(req, res) {
